@@ -51,11 +51,13 @@ function startGame() {
     const map = maps[level]; //First Map of the game
     if (!map) {
       gameWin();
+      // TODO: Show a win window with a reload(f5) to start the game again
       return;
     }
     if (!timeStart){
       timeStart = Date.now();
       timeInverval = setInterval(showTime, 100);
+      // TODO: mostrar segundo y milisegungos
       showRecord();
     }
    
@@ -193,41 +195,61 @@ function moveByKeys(event) {
 }
 function moveUp() {
     console.log('Me quiero mover hacia arriba');
-  
-    if ((playerPosition.y - elementsSize) < elementsSize) {
-      console.log('OUT');
-    } else {
-      playerPosition.y -= elementsSize;
+    if (Math.floor(playerPosition.y) > elementsSize) {
+      playerPosition.y = (playerPosition.y - elementsSize)
       startGame();
     }
+    // if ((playerPosition.y - elementsSize) < elementsSize) {
+    //   console.log('OUT');
+    // } else {
+    //   playerPosition.y -= elementsSize;
+    //   startGame();
+    // }
   }
 function moveLeft() {
     console.log('Me quiero mover hacia izquierda');
-  
-    if ((playerPosition.x - elementsSize) < elementsSize) {
-      console.log('OUT');
-    } else {
-      playerPosition.x -= elementsSize;
+
+    if (Math.floor(playerPosition.x) > elementsSize){
+      playerPosition.x = (playerPosition.x - elementsSize) 
+      
       startGame();
-    }
+  }
+    // if ((playerPosition.x - elementsSize) < elementsSize) {
+    //   console.log('OUT');
+    // } else {
+    //   playerPosition.x -= elementsSize;
+    //   startGame();
+    // }
 }
 function moveRight() {
     console.log('Me quiero mover hacia derecha');
-  
-    if ((playerPosition.x + elementsSize) > canvasSize) {
-      console.log('OUT');
-    } else {
-      playerPosition.x += elementsSize;
-      startGame();
-    }
+
+    if(Math.ceil(playerPosition.x)< 10*elementsSize){
+      playerPosition.x = (playerPosition.x + elementsSize) 
+      
+      startGame()
+  }
+    // if ((playerPosition.x + elementsSize) > canvasSize) {
+    //   console.log('OUT');
+    // } else {
+    //   playerPosition.x += elementsSize;
+    //   startGame();
+    // }
 }
 function moveDown() {
     console.log('Me quiero mover hacia abajo');
     
-    if ((playerPosition.y + elementsSize) > canvasSize) {
-      console.log('OUT');
-    } else {
-      playerPosition.y += elementsSize;
-      startGame();
-    }
+    if(Math.ceil(playerPosition.y) < 10*elementsSize){
+        
+
+      playerPosition.y = (playerPosition.y + elementsSize) 
+      
+      startGame()
+  }
+    // if ((playerPosition.y + elementsSize) > canvasSize) {
+    //   console.log('OUT');
+    // } else {
+    //   playerPosition.y += elementsSize;
+    //   startGame();
+    // }
 }

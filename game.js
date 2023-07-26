@@ -8,6 +8,7 @@ const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
 const spanRecord = document.querySelector('#record');
 const pResult = document.querySelector('#result');
+const showWin = document.querySelector('.win-container');
 
 let canvasSize;
 let elementsSize;
@@ -34,14 +35,16 @@ window.addEventListener('resize', setCanvasSize);
 
 function setCanvasSize() {
     if (window.innerHeight > window.innerWidth){
-        canvasSize = window.innerWidth * 0.8;
+        canvasSize = window.innerWidth * 0.7;
     }else {
-          canvasSize = window.innerHeight * 0.8;
+          canvasSize = window.innerHeight * 0.7;
     }
     canvas.setAttribute('width', canvasSize);
     canvas.setAttribute('height', canvasSize);
     
     elementsSize = canvasSize / 10;
+    playerPosition.x = undefined
+    playerPosition.y = undefined
     startGame();
 }
 function startGame() {
@@ -51,13 +54,12 @@ function startGame() {
     const map = maps[level]; //First Map of the game
     if (!map) {
       gameWin();
-      // TODO: Show a win window with a reload(f5) to start the game again
+      
       return;
     }
     if (!timeStart){
       timeStart = Date.now();
       timeInverval = setInterval(showTime, 100);
-      // TODO: mostrar segundo y milisegungos
       showRecord();
     }
    
@@ -129,9 +131,7 @@ function movePlayer (){
   game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
 }
 function levelWin () {
-  console.log('Subiste de Nivel!');
   level++;
-  // console.log(level);
   startGame();
 }
 function showLives() {
@@ -148,12 +148,16 @@ function showRecord (){
   spanRecord.innerHTML = localStorage.getItem('record_time');
 }
 function gameWin() {
-  console.log('You Win!!!');
-  clearInterval(timeInverval);
+  // TODO: console.log('You Win!!!');
+  // showWin.classList.add('inactive')
+  showWin.setAttribute('style', 'display: grid');
+  // showRecord();
 
+  clearInterval(timeInverval);
+  
   const recordTime = localStorage.getItem('record_time');
   const playerTime = Date.now() - timeStart;
-
+  
   if (recordTime){
     if (recordTime >= playerTime){
       localStorage.setItem('record_time', playerTime);
@@ -165,12 +169,13 @@ function gameWin() {
     localStorage.setItem('record_time', playerTime);
     pResult.innerHTML = 'Now, beat your record!'
   }
+
 }
 function levelFail() {
-  console.log('Chocaste contra un enemigo :(');
+  // TODO: console.log('Chocaste contra un enemigo :(');
   lives--;
 
-  console.log(lives);
+
   if(lives <= 0){
     level = 0;
     lives = 3;
@@ -194,62 +199,26 @@ function moveByKeys(event) {
     else if (event.key === 'ArrowDown') moveDown();
 }
 function moveUp() {
-    console.log('Me quiero mover hacia arriba');
     if (Math.floor(playerPosition.y) > elementsSize) {
       playerPosition.y = (playerPosition.y - elementsSize)
       startGame();
     }
-    // if ((playerPosition.y - elementsSize) < elementsSize) {
-    //   console.log('OUT');
-    // } else {
-    //   playerPosition.y -= elementsSize;
-    //   startGame();
-    // }
   }
 function moveLeft() {
-    console.log('Me quiero mover hacia izquierda');
-
     if (Math.floor(playerPosition.x) > elementsSize){
       playerPosition.x = (playerPosition.x - elementsSize) 
-      
       startGame();
   }
-    // if ((playerPosition.x - elementsSize) < elementsSize) {
-    //   console.log('OUT');
-    // } else {
-    //   playerPosition.x -= elementsSize;
-    //   startGame();
-    // }
 }
 function moveRight() {
-    console.log('Me quiero mover hacia derecha');
-
     if(Math.ceil(playerPosition.x)< 10*elementsSize){
       playerPosition.x = (playerPosition.x + elementsSize) 
-      
-      startGame()
+      startGame();
   }
-    // if ((playerPosition.x + elementsSize) > canvasSize) {
-    //   console.log('OUT');
-    // } else {
-    //   playerPosition.x += elementsSize;
-    //   startGame();
-    // }
 }
 function moveDown() {
-    console.log('Me quiero mover hacia abajo');
-    
     if(Math.ceil(playerPosition.y) < 10*elementsSize){
-        
-
       playerPosition.y = (playerPosition.y + elementsSize) 
-      
       startGame()
   }
-    // if ((playerPosition.y + elementsSize) > canvasSize) {
-    //   console.log('OUT');
-    // } else {
-    //   playerPosition.y += elementsSize;
-    //   startGame();
-    // }
 }

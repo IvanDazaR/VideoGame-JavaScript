@@ -55,8 +55,27 @@ body {
     margin: 0;
     width: 100%;
   }
-  
+  .win-container {
+    display: none;
+    background-color: #ff6600;
+    place-items: center;
+    width: 200px;
+    padding: 20px;
+    margin: auto;
+    border-radius: 8px;
+    position: absolute;
+    top: 50vh;
+  }
+  /* .inactive {
+    display: grid;
+  } */
+  .win-container h2 {
+    font-size: 13px;
+  }
+  .win-container button {
+    font-size: 13px;
+  }
   @media (max-width: 440px) {
-    button { margin-top: 25px; }
+    button { margin-top: 5px; }
     #up, #down { margin-left: 100%; margin-right: 100%; }
   }

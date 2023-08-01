@@ -56,19 +56,17 @@ body {
     width: 100%;
   }
   .win-container {
+    /* display: flex; */
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 100%;
     display: none;
-    background-color: #ff6600;
     place-items: center;
-    width: 200px;
     padding: 20px;
-    margin: auto;
     border-radius: 8px;
-    position: absolute;
-    top: 50vh;
   }
-  /* .inactive {
-    display: grid;
-  } */
+
   .win-container h2 {
     font-size: 13px;
   }

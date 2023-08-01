@@ -19,7 +19,7 @@ let timeStart;
 let timePlayer;
 let timeInverval;
 let timeRecord;
-
+let colision;
 const playerPosition = {
     x: undefined,
     y: undefined,
@@ -92,6 +92,7 @@ function startGame() {
               })
             }
             game.fillText(emoji, posX, posY);
+           
           });
     });
     movePlayer();
@@ -110,7 +111,7 @@ function startGame() {
      // game.textAlign = 'center'
      // game.fillText('JavaScript', 25,25);
     ***/
-
+  
 }
 function movePlayer (){
   const giftCollisionX = playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3);
@@ -125,10 +126,19 @@ function movePlayer (){
     const enemyCollisionY = enemy.y.toFixed(3) == playerPosition.y.toFixed(3)
     return enemyCollisionX && enemyCollisionY
   })
+  
+  
   if (enemyCollision) {
-    levelFail();
+    showCollision();
+    // setTimeout(levelFail, 1000)
+    levelFail()
   }
   game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
+}
+function showCollision () {
+  game.fillText(emojis['BOMB_COLLISION'], playerPosition.x, playerPosition.y);
+  playerPosition.x = undefined;
+  playerPosition.y = undefined;
 }
 function levelWin () {
   level++;
@@ -148,43 +158,64 @@ function showRecord (){
   spanRecord.innerHTML = localStorage.getItem('record_time');
 }
 function gameWin() {
+  const recordTime = localStorage.getItem('record_time');
+  const playerTime = Date.now() - timeStart;
   // TODO: console.log('You Win!!!');
   // showWin.classList.add('inactive')
-  showWin.setAttribute('style', 'display: grid');
+    game.font = '25px Verdana';
+    game.textAlign = 'center';
+    game.fillStyle = '#ff6600';
+    game.fillRect(0, canvasSize /3, canvasSize, canvasSize/3);
+    game.fillStyle = 'white'
+    game.fillText('You Win!' + emojis['WIN'], canvasSize/2, canvasSize/2);
+    
+    showWin.setAttribute('style', 'display: flex');
   // showRecord();
 
   clearInterval(timeInverval);
   
-  const recordTime = localStorage.getItem('record_time');
-  const playerTime = Date.now() - timeStart;
+ 
   
   if (recordTime){
     if (recordTime >= playerTime){
       localStorage.setItem('record_time', playerTime);
-      pResult.innerHTML = 'YOU BROKE THE RECORD!'
+      game.fillText('YOU BROKE THE RECORD!', canvasSize/2 , canvasSize/2 + 30);
+      game.fillText('Record: ' + recordTime, canvasSize/2 , canvasSize/2 + 60);
+      pResult.innerHTML = 'YOU BROKE THE RECORD!';
+      
     } else {
-      pResult.innerHTML = 'Upps, Thats not your best record!'
+      game.fillText('Upps, That\'s not your best record! ', canvasSize/2 , canvasSize/2 + 30);
+      game.fillText('Record: ' + playerTime, canvasSize/2 , canvasSize/2 + 60);
+      pResult.innerHTML = 'Upps, That\'s not your best record!'
     }
   } else {
     localStorage.setItem('record_time', playerTime);
+    game.fillText('Now, beat your record!', canvasSize/2 , canvasSize/2 + 30);
+    game.fillText('Record: ' + recordTime, canvasSize/2 , canvasSize/2 + 60);
     pResult.innerHTML = 'Now, beat your record!'
   }
-
+  
 }
 function levelFail() {
-  // TODO: console.log('Chocaste contra un enemigo :(');
+
   lives--;
-
-
-  if(lives <= 0){
+  if (lives <= 0) {
+    game.font = '25px Verdana';
+    game.textAlign = 'center';
+    game.fillStyle = '#ff6600';
+    game.fillRect(0, canvasSize / 3, canvasSize, canvasSize / 3);
+    game.fillStyle = 'white'
+    game.fillText('Game Over', canvasSize / 2, canvasSize / 2);
+    showWin.setAttribute('style', 'display: flex');
     level = 0;
     lives = 3;
     timeStart = undefined;
+    clearInterval(timeInverval);
+    return;
   }
   playerPosition.x = undefined
   playerPosition.y = undefined
-  startGame();
-
+  setTimeout(startGame, 1000);
 }
 window.addEventListener('keydown', moveByKeys);
 btnUp.addEventListener('click', moveUp);
